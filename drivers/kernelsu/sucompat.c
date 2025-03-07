@@ -59,7 +59,7 @@ int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
 		return 0;
 	}
 	
-	if (!ksu_is_allow_uid(current_uid().val)) {
+	if (!ksu_is_allow_uid(current_uid())) {
 		return 0;
 	}
 
@@ -84,7 +84,7 @@ int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags)
 		return 0;
 	}
 	
-	if (!ksu_is_allow_uid(current_uid().val)) {
+	if (!ksu_is_allow_uid(current_uid())) {
 		return 0;
 	}
 
@@ -117,7 +117,7 @@ int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
 		return 0;
 	}
 	
-	if (!ksu_is_allow_uid(current_uid().val))
+	if (!ksu_is_allow_uid(current_uid()))
 		return 0;
 
 	if (unlikely(!filename_ptr))
@@ -150,9 +150,9 @@ int ksu_handle_execve_sucompat(int *fd, const char __user **filename_user,
 		return 0;
 	}
 
-	if (!ksu_is_allow_uid(current_uid().val))
+	if (!ksu_is_allow_uid(current_uid()))
 		return 0;
-	
+
 	if (unlikely(!filename_user))
 		return 0;
 
@@ -199,7 +199,7 @@ int ksu_handle_devpts(struct inode *inode)
 		return 0;
 	}
 
-	uid_t uid = current_uid().val;
+	uid_t uid = current_uid();
 	if (uid % 100000 < 10000) {
 		// not untrusted_app, ignore it
 		return 0;
