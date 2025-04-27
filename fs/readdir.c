@@ -20,6 +20,34 @@
 
 #include <asm/uaccess.h>
 
+int iterate_dir(struct file *file, struct dir_context *ctx)
+{
+	struct inode *inode = file->f_path.dentry->d_inode;
+	int res = -ENOTDIR;
+	if (!file->f_op || !file->f_op->iterate)
+		goto out;
+
+	res = security_file_permission(file, MAY_READ);
+	if (res)
+		goto out;
+
+	res = mutex_lock_killable(&inode->i_mutex);
+	if (res)
+		goto out;
+
+	res = -ENOENT;
+	if (!IS_DEADDIR(inode)) {
+		ctx->pos = file->f_pos;
+		res = file->f_op->iterate(file, ctx);
+		file->f_pos = ctx->pos;
+		file_accessed(file);
+	}
+	mutex_unlock(&inode->i_mutex);
+out:
+	return res;
+}
+EXPORT_SYMBOL(iterate_dir);
+
 int vfs_readdir(struct file *file, filldir_t filler, void *buf)
 {
 	struct inode *inode = file->f_path.dentry->d_inode;
