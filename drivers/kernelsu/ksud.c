@@ -270,26 +270,6 @@ static int __ksu_handle_execveat_ksud(int *fd, char *filename,
 	return 0;
 }
 
-// keep this for manually hooked builds
-__maybe_unused int ksu_handle_execveat_ksud(int *fd, struct filename **filename_ptr,
-			     struct user_arg_ptr *argv, struct user_arg_ptr *envp,
-			     int *flags)
-{
-	// return early when disabled
-	if (!ksu_execveat_hook) {
-		return 0;
-	}
-
-	if (!filename_ptr)
-		return 0;
-
-	struct filename *filename = *filename_ptr;
-	if (IS_ERR(filename))
-		return 0;
-
-	return __ksu_handle_execveat_ksud(fd, (char *)filename->name, argv, envp, flags);
-}
-
 static ssize_t (*orig_read)(struct file *, char __user *, size_t, loff_t *);
 static ssize_t (*orig_read_iter)(struct kiocb *, struct iov_iter *);
 static struct file_operations fops_proxy;
