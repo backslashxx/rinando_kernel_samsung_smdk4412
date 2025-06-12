@@ -78,7 +78,7 @@ void ksu_android_ns_fs_check()
 
 struct file *ksu_filp_open_compat(const char *filename, int flags, umode_t mode)
 {
-#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0) || defined(CONFIG_KSU_ALLOWLIST_WORKAROUND)
+#if 0
 	if (init_session_keyring != NULL && !current_cred()->session_keyring &&
 	    (current->flags & PF_WQ_WORKER)) {
 		pr_info("installing init session keyring for older kernel\n");

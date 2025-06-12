@@ -700,7 +700,7 @@ LSM_HANDLER_TYPE ksu_inode_permission(struct inode *inode, int mask)
 }
 
 // kernel 4.9 and older
-#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0) || defined(CONFIG_KSU_ALLOWLIST_WORKAROUND)
+#if 0
 LSM_HANDLER_TYPE ksu_key_permission(key_ref_t key_ref, const struct cred *cred,
 			      unsigned perm)
 {
