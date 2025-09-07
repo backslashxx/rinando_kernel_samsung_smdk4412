@@ -191,9 +191,6 @@ void escape_to_root(void)
 
 LSM_HANDLER_TYPE ksu_handle_rename(struct dentry *old_dentry, struct dentry *new_dentry)
 {
-	
-	return 0;
-
 	if (!current->mm) {
 		// skip kernel threads
 		return 0;
@@ -351,7 +348,6 @@ LSM_HANDLER_TYPE ksu_handle_prctl(int option, unsigned long arg2, unsigned long 
 			if (!boot_complete_lock) {
 				boot_complete_lock = true;
 				pr_info("boot_complete triggered\n");
-				track_throne();
 			}
 			break;
 		}
